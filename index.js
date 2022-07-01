@@ -23,7 +23,7 @@ async function run() {
         app.post('/task', async (req,res) =>{
             const task = req.body;
             const result = await  taskCollections.insertOne(task);
-            res.send(result)
+            res.send({...result, timestamp: +new Date()})
         });
 
         app.get('/task', async (req,res) =>{
@@ -43,7 +43,7 @@ async function run() {
             }
 
             const result = await taskCollections.updateOne(filter,updateDoc,option);
-            res.send(result);
+            res.send({...result, timestamp: +new Date()});
         });
 
         app.put('/task/:id', async (req,res) =>{
@@ -58,14 +58,14 @@ async function run() {
             }
 
             const result  = await taskCollections.updateOne(filter,updatedDoc,option);
-            res.send(result);
+            res.send({...result, timestamp: +new Date()});
         });
 
         app.delete('/task/:id', async (req,res) =>{
             const id = req.params.id;
             const filter = {_id:ObjectId(id)};
             const result = await taskCollections.deleteOne(filter);
-            res.send(result);
+            res.send({...result, timestamp: +new Date()});
         });
     } finally {
     }
